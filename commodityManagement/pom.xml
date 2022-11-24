@@ -129,6 +129,13 @@
       <scope>provided</scope>
       <version>${jsp-api.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20140107</version>
+    </dependency>
+
     <!-- Jackson Json处理工具包 -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
