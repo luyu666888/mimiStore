@@ -17,4 +17,11 @@ public interface ProductInfoService {
      * 分页功能实现
      */
     PageInfo splitPage(int pageNum, int pageSize);
+
+    /**
+     * 新增商品
+     * @param productInfo
+     * @return
+     */
+    int save(ProductInfo productInfo);
 }

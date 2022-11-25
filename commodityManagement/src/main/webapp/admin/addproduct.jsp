@@ -43,6 +43,12 @@
             });
         }
     </script>
+
+	<script type="text/javascript">
+		if ("${msg}" != ""){
+			alert("${msg}")
+		}
+	</script>
 	<body>
 	<!--取出上一个页面上带来的page的值-->
 

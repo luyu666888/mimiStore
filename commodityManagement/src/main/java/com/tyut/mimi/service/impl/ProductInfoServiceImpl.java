@@ -49,4 +49,10 @@ public class ProductInfoServiceImpl implements ProductInfoService {
          PageInfo<ProductInfo> pageInfo = new PageInfo<>(list);
          return pageInfo;
     }
+
+    @Override
+    public int save(ProductInfo productInfo) {
+        int insert = productInfoMapper.insert(productInfo);
+        return insert;
+    }
 }

@@ -8,6 +8,7 @@ import com.tyut.mimi.utils.FileNameUtil;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,12 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping("/prod")
 public class ProductInfoController {
 
+    String saveFileName = "";
 
     //每页显示的记录条数
     public static final int PAGE_SIZE = 5;
@@ -68,7 +71,7 @@ public class ProductInfoController {
     public Object ajaxImg(MultipartFile pimage, HttpServletRequest request){
 
         //提取生成文件名 UUID+图片后最
-        String saveFileName = FileNameUtil.getUUIDFileName()+FileNameUtil.getFileType(pimage.getOriginalFilename());
+        saveFileName = FileNameUtil.getUUIDFileName()+FileNameUtil.getFileType(pimage.getOriginalFilename());
 
         //得到项目中图片存储的路径 获取项目于根路径，再将image_big加到后面
         String path = request.getServletContext().getRealPath("/image_big");
@@ -85,5 +88,34 @@ public class ProductInfoController {
         object.put("imgurl", saveFileName);
 
         return object.toString();
+    }
+
+
+    /**
+     * 新增商品
+     * @param productInfo
+     * @param request
+     * @return
+     */
+    @RequestMapping("save")
+    public String save(ProductInfo productInfo, HttpServletRequest request){
+
+        productInfo.setpImage(saveFileName);
+        productInfo.setpDate(new Date());
+
+        int res = -1;
+        try {
+            res = productInfoService.save(productInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (res > 0){
+           request.setAttribute("msg", "增加成功");
+        }else {
+            request.setAttribute("msg", "增加失败");
+        }
+
+        //增加成功后重新访问数据库，所以跳转到分页显示的action
+        return "forward:/prod/split.action";
     }
 }
